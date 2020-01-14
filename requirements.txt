@@ -1,0 +1,13 @@
+requests
+beautifulsoup4
+google-cloud-language
+alpaca_trade_api
+selenium
+keras==2.3.1
+tensorflow==2.1.0
+pandas==0.25.3
+numpy==4.41.1
+tqdm==4.41.1
+docopt==0.6.2
+coloredlogs==10.0
+jupyterlab==1.2.4
