@@ -8,7 +8,7 @@ I'll post some results after I do some more testing. WIP
 
 ## Downsides
 
-Doesn't take realtime data, only runs every 15 minutes. I also have no idea how to actually implement Q-learning correctly so it could be very wrong. Please consider reaching out if you have some experience and want to help with it!
+I have no idea how to actually implement Q-learning correctly so it could be very wrong. Please consider reaching out if you have some experience and want to help with it! Also cannot train on old news articles, so sentiment only runs during realtime.
 
 ## Data
 
