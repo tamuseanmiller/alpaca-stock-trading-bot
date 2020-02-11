@@ -4,7 +4,6 @@ from collections import deque
 
 import numpy as np
 
-import alpha_vantage
 import tensorflow as tf
 import keras.backend as K
 

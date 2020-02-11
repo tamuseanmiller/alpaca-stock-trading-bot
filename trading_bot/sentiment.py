@@ -18,6 +18,47 @@ from google.cloud.language import types
 import requests
 
 
+def decide_stock():
+    url = 'https://finance.yahoo.com/screener/predefined/day_gainers'
+
+    from selenium import webdriver
+    from selenium.webdriver.chrome.service import Service
+    from selenium.webdriver.chrome.options import Options
+    import time
+    from bs4 import BeautifulSoup
+
+    # Starts Chrome in headless mode using selenium
+    WINDOW_SIZE = "1920,1080"
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument("--window-size=%s" % WINDOW_SIZE)
+    chrome_options.binary_location = 'C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'
+    service = Service('C:/Users/Sean/Documents/chromedriver.exe')
+    service.start()
+    driver = webdriver.Chrome(executable_path='C:/Users/Sean/Documents/chromedriver.exe',
+                              chrome_options=chrome_options)
+    driver.get(url)
+    html = driver.find_element_by_css_selector('table')
+
+    # Uses BeautifulSoup to parse table
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+
+    job_elems = soup.findAll('tbody')
+
+    rows = job_elems.findAll('td')
+
+    for row in rows:
+        row = row.findAll('ta')
+        # print(row.findAll("tv-screener-table__signal tv-screener-table__signal--strong-buy"))
+        # ans = row.findAll('a')
+        if row is not None:
+            print(row)
+
+    print(job_elems.findAll('tr'))
+
+    driver.quit()
+
+
 def runNewsAnalysis(stock, api):
     url = 'https://www.tradingview.com/screener/'
 

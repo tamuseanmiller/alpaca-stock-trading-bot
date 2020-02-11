@@ -34,6 +34,17 @@ export APCA_API_SECRET_KEY=YOUR_SECRET_KEY
 export GOOGLE_APPLICATION_CREDENTIALS=PATH_TO_CREDENTIALS_FILE
 ```
 
+Install python
+
+```bash
+sudo apt-get update
+sudo apt-get install python 3.6
+sudo apt-get -y install python3-pip
+sudo apt install python-pip
+pip install --upgrade pip
+sudo pip3 install -r requirements.txt
+```
+
 I tried to make the use of this project as simple as possible and you only need a few commands to set it up. Most of the packages you need to install are from the requirements.txt file
 
 ```bash

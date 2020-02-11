@@ -69,7 +69,7 @@ if __name__ == "__main__":
     today = datetime.date.today()
 
     # All tickers to use when training
-    tickers = ['APPL', 'AMD', 'BLK', 'BX', 'DJI', 'GOOG', 'GOOGL', 'SPX', 'SVX', 'JPM', 'MSFT', 'NDX', 'QCOM', 'TOT']
+    tickers = ['AAPL', 'AMD', 'BLK', 'BX', 'DJI', 'GOOG', 'GOOGL', 'SPX', 'SVX', 'JPM', 'MSFT', 'NDX', 'QCOM', 'TOT']
 
     coloredlogs.install(level="DEBUG")
     switch_k_backend_device()
@@ -86,10 +86,11 @@ if __name__ == "__main__":
         file.write('Adj Close\n')
 
         # 36.5 iterations for 1 year, 37 just to get an integer value
-        for iterations in range(int(37 * years)):
+        for iterations in range(int(years)*548):
 
             # 10 days
-            data = api.get_barset(timeframe='15Min', symbols=ticker, limit=960, end=past)
+            data = api.get_barset(timeframe='minute', symbols=ticker, limit=100, end=past)
+            # print(data)
             past = past - datetime.timedelta(days=10)
 
             # Writes c-values
