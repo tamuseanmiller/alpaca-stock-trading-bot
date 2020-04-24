@@ -44,7 +44,6 @@ from trading_bot.ops import get_state
 
 # Method to run script for each minute
 def decisions(agent, data, window_size, debug, stock, api):
-
     # Initialize Variables
     total_profit = 0
     global orders
@@ -77,7 +76,7 @@ def decisions(agent, data, window_size, debug, stock, api):
             curr_time = clock.timestamp.replace(tzinfo=datetime.timezone.utc).timestamp()
             time_to_open = int((opening_time - curr_time) / 60)
             logging.info(str(time_to_open) + " minutes til market open.")
-            logging.info("Last days profit: " + str(total_profit))
+            logging.info("Last days profit: {}".format(format_currency(str(total_profit))))
             time.sleep(300)
             is_open = api.get_clock().is_open
             if is_open:
@@ -99,6 +98,11 @@ def decisions(agent, data, window_size, debug, stock, api):
                 orders = []
                 history = []
                 agent.inventory = []
+
+                # Sell all stock using Alpaca API
+                if (t == data_length - 1) and len(orders) is not 0:
+                    qty = api.get_position(stock).qty
+                    submit_order_helper(qty, stock, 'sell', api)
 
         if t == data_length - 1:
             time.sleep(60)
@@ -123,7 +127,9 @@ def decisions(agent, data, window_size, debug, stock, api):
             history.append((data[t], "BUY"))
             if debug:
                 logging.debug(
-                    "Buy at: {} | Sentiment: {}".format(format_currency(data[t]), format_sentiment(sentiments)))
+                    "Buy at: {} | Sentiment: {} | Total Profit: {}".format(format_currency(data[t]),
+                                                                           format_sentiment(sentiments),
+                                                                           format_currency(total_profit)))
                 # "Buy at: {}".format(format_currency(data[t])))
 
         # SELL
@@ -153,8 +159,8 @@ def decisions(agent, data, window_size, debug, stock, api):
         else:
             history.append((data[t], "HOLD"))
             if debug:
-                logging.debug("Hold at: {} | Sentiment: {}".format(
-                    format_currency(data[t]), format_sentiment(sentiments)))
+                logging.debug("Hold at: {} | Sentiment: {} | Total Profit: {}".format(
+                    format_currency(data[t]), format_sentiment(sentiments), format_currency(total_profit)))
                 # format_currency(data[t])))
 
         agent.memory.append((state, action, reward, next_state, False))
@@ -172,7 +178,7 @@ def submit_order_helper(qty, stock, side, api):
             api.submit_order(stock, qty, side, "market", "day")
             logging.info("Market order of | " + str(qty) + " " + stock + " " + side + " | completed.")
         except:
-            logging.info("Order of | " + str(qty) + " " + stock + " " + side + " | did not go through.")
+            logging.warning("Order of | " + str(qty) + " " + stock + " " + side + " | did not go through.")
     else:
         logging.info("Quantity is 0, order of | " + str(qty) + " " + stock + " " + side + " | not completed.")
 

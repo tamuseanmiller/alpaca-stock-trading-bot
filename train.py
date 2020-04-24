@@ -53,6 +53,8 @@ def main(window_size, batch_size, ep_count, model_name, pretrained, debug):
         val_result, _ = evaluate_model(agent, val_data, window_size, debug)
         show_train_result(train_result, val_result, initial_offset)
 
+    agent.soft_save()
+
 
 if __name__ == "__main__":
     args = docopt(__doc__)
@@ -85,12 +87,10 @@ if __name__ == "__main__":
 
         file.write('Adj Close\n')
 
-        # 36.5 iterations for 1 year, 37 just to get an integer value
-        for iterations in range(int(years)*548):
+        # Iterate every ticker through the number of years
+        for iterations in range(int(years)*40):
 
-            # 10 days
             data = api.get_barset(timeframe='minute', symbols=ticker, limit=100, end=past)
-            # print(data)
             past = past - datetime.timedelta(days=10)
 
             # Writes c-values
