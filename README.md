@@ -4,7 +4,8 @@ This project is a Q-learning based bot that uses historical data to make a worki
 
 ## Results
 
-I'll post some results after I do some more testing. WIP
+After giving the bot a $100,000 paper account and letting it run in and around a global pandemic these were the results.
+![Results](/images/results.png)
 
 ## Downsides
 
