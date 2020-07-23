@@ -11,10 +11,10 @@ import keras.backend as K
 format_sentiment = lambda sentiment: '{0:.2f}'.format(sentiment)
 
 # Formats Position
-format_position = lambda price: ('-$' if price < 0 else '+$') + '{0:.2f}'.format(abs(price))
+format_position = lambda price: ('-$' if price < 0 else '+$') + '{0:.2f}'.format(abs(float(price)))
 
 # Formats Currency
-format_currency = lambda price: '${0:.2f}'.format(abs(price))
+format_currency = lambda price: '${0:.2f}'.format(abs(float(price)))
 
 
 def show_train_result(result, val_position, initial_offset):

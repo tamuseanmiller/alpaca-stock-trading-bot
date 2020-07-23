@@ -22,7 +22,7 @@ import logging
 import numpy as np
 
 from tqdm import tqdm
-from time import clock
+from time import process_time
 
 from trading_bot.agent import Agent
 from trading_bot.methods import evaluate_model
@@ -55,7 +55,6 @@ def decisions(agent, data, window_size, debug, stock, api):
     state = get_state(data, 0, window_size + 1)
 
     # decide_stock()
-
     t = 0
 
     # Main While Loop
@@ -65,20 +64,47 @@ def decisions(agent, data, window_size, debug, stock, api):
         is_open = True
 
         if t == data_length - 1:
-            # Wait for market to open.
-            is_open = api.get_clock().is_open
+
+            # Check for connection errors and retry 30 times
+            cnt = 0
+            while cnt <= 30:
+
+                try:
+
+                    # Wait for market to open.
+                    is_open = api.get_clock().is_open
+                    break
+
+                except:
+                    logging.debug("Lost connection, retrying in 30s (1/" + str(cnt) + ")")
+                    time.sleep(30)
+                    cnt+=1
+                    continue
 
         # Checks for if Market is open
         while not is_open:
             logging.info("Waiting for market to open...")
-            clock = api.get_clock()
-            opening_time = clock.next_open.replace(tzinfo=datetime.timezone.utc).timestamp()
-            curr_time = clock.timestamp.replace(tzinfo=datetime.timezone.utc).timestamp()
-            time_to_open = int((opening_time - curr_time) / 60)
-            logging.info(str(time_to_open) + " minutes til market open.")
-            logging.info("Last days profit: {}".format(format_currency(str(total_profit))))
-            time.sleep(300)
-            is_open = api.get_clock().is_open
+
+            # Check for connection errors and retry 30 times
+            cnt = 0
+            while cnt <= 30:
+                try:
+                    clock = api.get_clock()
+                    opening_time = clock.next_open.replace(tzinfo=datetime.timezone.utc).timestamp()
+                    curr_time = clock.timestamp.replace(tzinfo=datetime.timezone.utc).timestamp()
+                    time_to_open = int((opening_time - curr_time) / 60)
+                    logging.info(str(time_to_open) + " minutes til market open.")
+                    logging.info("Last days profit: {}".format(format_currency(str(total_profit))))
+                    time.sleep(time_to_open *    60)
+                    is_open = api.get_clock().is_open
+                    break
+
+                except:
+                    logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+                    time.sleep(30)
+                    cnt+=1
+                    continue
+
             if is_open:
                 logging.info("Market opened.")
 
@@ -100,13 +126,26 @@ def decisions(agent, data, window_size, debug, stock, api):
                 agent.inventory = []
 
                 # Sell all stock using Alpaca API
-                if (t == data_length - 1) and len(orders) is not 0:
+                if (t == data_length - 1) and len(orders) != 0:
                     qty = api.get_position(stock).qty
                     submit_order_helper(qty, stock, 'sell', api)
 
         if t == data_length - 1:
             time.sleep(60)
-            date = api.get_barset(timeframe='minute', symbols=stock_name, limit=1, end=datetime.datetime.now())
+
+            # Check for connection errors and retry 30 times
+            cnt = 0
+            while cnt <= 30:
+                try:
+                    date = api.get_barset(timeframe='minute', symbols=stock_name, limit=1, end=datetime.datetime.now())
+                    break
+
+                except:
+                    logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+                    time.sleep(30)
+                    cnt+=1
+                    continue
+
             data.append(date.get(stock)[0].c)
 
         reward = 0
@@ -127,7 +166,7 @@ def decisions(agent, data, window_size, debug, stock, api):
             history.append((data[t], "BUY"))
             if debug:
                 logging.debug(
-                    "Buy at: {} | Sentiment: {} | Total Profit: {}".format(format_currency(data[t]),
+                    "Buy at: {}  | Sentiment: {} | Total Profit: {}".format(format_currency(data[t]),
                                                                            format_sentiment(sentiments),
                                                                            format_currency(total_profit)))
                 # "Buy at: {}".format(format_currency(data[t])))
@@ -140,7 +179,7 @@ def decisions(agent, data, window_size, debug, stock, api):
             total_profit += data[t] - bought_price
 
             # Sell all stock using Alpaca API
-            if t == data_length - 1 and len(orders) is not 0:
+            if t == data_length - 1 and len(orders) != 0:
                 try:
                     qty = api.get_position(stock).qty
                     submit_order_helper(qty, stock, 'sell', api)
@@ -195,8 +234,19 @@ def alpaca_trading_bot(stock_name, window_size=10, model_name='model_debug'):
     file = open('ticker.csv', 'w')
     file.write('Adj Close\n')
 
-    # Get date for ticker
-    date = api.get_barset(timeframe='15Min', symbols=stock_name, limit=1000, end=datetime.datetime.now())
+    # Check for connection errors and retry 30 times
+    cnt = 0
+    while cnt <= 30:
+        try:
+            # Get date for ticker
+            date = api.get_barset(timeframe='15Min', symbols=stock_name, limit=1000, end=datetime.datetime.now())
+            break
+
+        except:
+            logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+            time.sleep(30)
+            cnt+=1
+            continue
 
     # Write ticker csv
     for minutes in date.get(stock_name):

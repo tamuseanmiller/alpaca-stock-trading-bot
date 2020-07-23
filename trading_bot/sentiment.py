@@ -16,9 +16,12 @@ from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 import requests
+import coloredlogs
+import logging
 
 
 def decide_stock():
+    coloredlogs.install(level="DEBUG")
     url = 'https://finance.yahoo.com/screener/predefined/day_gainers'
 
     from selenium import webdriver
@@ -60,6 +63,7 @@ def decide_stock():
 
 
 def runNewsAnalysis(stock, api):
+    coloredlogs.install(level="DEBUG")
     url = 'https://www.tradingview.com/screener/'
 
     from selenium import webdriver
@@ -112,6 +116,8 @@ def runNewsAnalysis(stock, api):
                           'language=en&'
                           'sortBy=publishedAt&'
                           'pageSize=100')
+
+    # url = ('https://newsapi.org/v2/everything?apiKey=d42e88f1fb624084891e89df549c06ff&q=yeet&sources=reuters,the-wall-street-journal,cnbc&language=en&sortBy=publishedAt&pageSize=100')
     response = requests.get(url).json()['articles']
 
     # Polygon News API call
@@ -128,9 +134,21 @@ def runNewsAnalysis(stock, api):
             "content": words,
             "type": enums.Document.Type.PLAIN_TEXT}
 
-        # Detects the sentiment of the text
-        sentiment += client.analyze_sentiment(document=document,
-                                              encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
+        # Check for connection errors and retry 30 times
+        cnt = 0
+        while cnt <= 30:
+            
+            try:
+                # Detects the sentiment of the text
+                sentiment += client.analyze_sentiment(document=document,
+                                                      encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
+                break
+
+            except:
+                logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+                time.sleep(30)
+                cnt+=1
+                continue
 
     for source in news:
         words = source.summary
@@ -138,8 +156,20 @@ def runNewsAnalysis(stock, api):
             "content": words,
             "type": enums.Document.Type.PLAIN_TEXT}
 
-        # Detects the sentiment of the text
-        sentiment += client.analyze_sentiment(document=document,
-                                              encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
+        # Check for connection errors and retry 30 times
+        cnt = 0
+        while cnt <= 30:
+
+            try:
+                # Detects the sentiment of the text
+                sentiment += client.analyze_sentiment(document=document,
+                                                      encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
+                break
+
+            except:
+                logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+                time.sleep(30)
+                cnt+=1
+                continue
 
     return sentiment
