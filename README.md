@@ -4,7 +4,9 @@ This project is a Q-learning based bot that uses historical data to make a worki
 
 ## Results
 
-I'll post some results after I do some more testing. WIP
+After giving the bot a $100,000 paper account and letting it run in and around a global pandemic these were the results.
+
+![Results](images/results.PNG)
 
 ## Downsides
 
@@ -51,7 +53,7 @@ I tried to make the use of this project as simple as possible and you only need 
 pip3 install -r requirements.txt
 ```
 
-Now you can begin training. The bot automatically grabs the data in 15 minute periods. The basic structure is:
+Now you can begin training. The bot automatically grabs the data in 1 minute periods. The basic structure is:
 
 ```bash
 python3 train.py <years> [--window-size=<window-size>] [--batch-size=<batch-size>] [--episode-count=<episode-count>] [--model-name=<model-name>] [--pretrained] [--debug]
