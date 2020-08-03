@@ -72,24 +72,14 @@ def decisions(agent, data, window_size, debug, stock, api):
             while cnt <= 30:
 
                 try:
-<<<<<<< HEAD
-=======
-
->>>>>>> master
                     # Wait for market to open.
                     is_open = api.get_clock().is_open
                     break
 
                 except:
-<<<<<<< HEAD
                     logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
                     time.sleep(30)
                     cnt += 1
-=======
-                    logging.debug("Lost connection, retrying in 30s (1/" + str(cnt) + ")")
-                    time.sleep(30)
-                    cnt+=1
->>>>>>> master
                     continue
 
         # Checks for if Market is open
@@ -104,7 +94,6 @@ def decisions(agent, data, window_size, debug, stock, api):
                     opening_time = clock.next_open.replace(tzinfo=datetime.timezone.utc).timestamp()
                     curr_time = clock.timestamp.replace(tzinfo=datetime.timezone.utc).timestamp()
                     time_to_open = int((opening_time - curr_time) / 60)
-<<<<<<< HEAD
                     logging.info("Last days profit: {}".format(format_currency(str(total_profit))))
 
                     # Countdown timer until market opens
@@ -115,29 +104,16 @@ def decisions(agent, data, window_size, debug, stock, api):
 
                     # Alternative timer here
                     # time.sleep(time_to_open *    60)
-=======
-                    logging.info(str(time_to_open) + " minutes til market open.")
-                    logging.info("Last days profit: {}".format(format_currency(str(total_profit))))
-                    time.sleep(time_to_open *    60)
->>>>>>> master
                     is_open = api.get_clock().is_open
                     break
 
                 except:
-<<<<<<< HEAD
                     logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
                     time.sleep(30)
                     cnt += 1
                     continue
 
             # Initialization of new day, we only want this to happen once at the beginning of each day
-=======
-                    logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
-                    time.sleep(30)
-                    cnt+=1
-                    continue
-
->>>>>>> master
             if is_open:
                 logging.info("Market opened.")
 
@@ -158,12 +134,8 @@ def decisions(agent, data, window_size, debug, stock, api):
                 history = []
                 agent.inventory = []
 
-<<<<<<< HEAD
                 # ****COMMENT THIS OUT IF YOU DON'T WANT TO SELL ALL OF THE STOCKS AT THE BEGINNING OF NEW DAY****
                 # Sell all stock using Alpaca API at the beginning of the new day
-=======
-                # Sell all stock using Alpaca API
->>>>>>> master
                 if (t == data_length - 1) and len(orders) != 0:
                     qty = api.get_position(stock).qty
                     submit_order_helper(qty - 2, stock, 'sell', api)
@@ -180,15 +152,9 @@ def decisions(agent, data, window_size, debug, stock, api):
                     break
 
                 except:
-<<<<<<< HEAD
                     logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
                     time.sleep(30)
                     cnt += 1
-=======
-                    logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
-                    time.sleep(30)
-                    cnt+=1
->>>>>>> master
                     continue
 
             data.append(date.get(stock)[0].c)
@@ -213,13 +179,8 @@ def decisions(agent, data, window_size, debug, stock, api):
             if debug:
                 logging.debug(
                     "Buy at: {}  | Sentiment: {} | Total Profit: {}".format(format_currency(data[t]),
-<<<<<<< HEAD
                                                                             format_sentiment(sentiments),
                                                                             format_currency(total_profit)))
-=======
-                                                                           format_sentiment(sentiments),
-                                                                           format_currency(total_profit)))
->>>>>>> master
                 # "Buy at: {}".format(format_currency(data[t])))
 
         # SELL
@@ -230,7 +191,6 @@ def decisions(agent, data, window_size, debug, stock, api):
             total_profit += data[t] - bought_price
 
             # Sell all stock using Alpaca API
-<<<<<<< HEAD
             # if t == data_length - 1 and len(orders) != 0:
             #    try:
             #        qty = api.get_position(stock).qty
@@ -242,16 +202,6 @@ def decisions(agent, data, window_size, debug, stock, api):
             # Sell's one stock using Alpaca's API if it is in realtime
             if t == data_length - 1:
                 submit_order_helper(1, stock, 'sell', api)
-=======
-            if t == data_length - 1 and len(orders) != 0:
-                try:
-                    qty = api.get_position(stock).qty
-                    submit_order_helper(qty, stock, 'sell', api)
-                    orders.pop()
-                except:
-                    logging.info("No position!")
-
->>>>>>> master
             history.append((data[t], "SELL"))
             if debug:
                 logging.debug("Sell at: {} | Sentiment: {} | Position: {}".format(
@@ -308,15 +258,9 @@ def alpaca_trading_bot(stock_name, window_size=10, model_name='model_debug'):
             break
 
         except:
-<<<<<<< HEAD
             logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
             time.sleep(30)
             cnt += 1
-=======
-            logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
-            time.sleep(30)
-            cnt+=1
->>>>>>> master
             continue
 
     # Write ticker csv
