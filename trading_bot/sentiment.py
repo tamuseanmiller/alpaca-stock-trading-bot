@@ -16,9 +16,15 @@ from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 import requests
+import coloredlogs
+import logging
+import flair
+from flair.models import TextClassifier
+from flair.data import Sentence
 
 
 def decide_stock():
+    coloredlogs.install(level="DEBUG")
     url = 'https://finance.yahoo.com/screener/predefined/day_gainers'
 
     from selenium import webdriver
@@ -59,7 +65,9 @@ def decide_stock():
     driver.quit()
 
 
-def runNewsAnalysis(stock, api):
+def runNewsAnalysis(stock, api, natural_lang):
+    logging.warning("Running sentiment with Natural Language set to: " + str(natural_lang))
+    coloredlogs.install(level="DEBUG")
     url = 'https://www.tradingview.com/screener/'
 
     from selenium import webdriver
@@ -104,14 +112,17 @@ def runNewsAnalysis(stock, api):
     client = language.LanguageServiceClient()
     # [END language_python_migration_client]
 
+    flair_sentiment = flair.models.TextClassifier.load('en-sentiment')
+
     # NewsAPI API call
     url = ('https://newsapi.org/v2/everything?'
            'apiKey=d42e88f1fb624084891e89df549c06ff&'
-           'q=' + stock + '&'
-                          'sources=reuters, the-wall-street-journal, cnbc&'
-                          'language=en&'
-                          'sortBy=publishedAt&'
-                          'pageSize=100')
+           'qInTitle=\"' + stock + '\"&'
+                                   'sources=reuters, the-wall-street-journal, cnbc&'
+                                   'language=en&'
+                                   'sortBy=publishedAt&'
+                                   'pageSize=100')
+
     response = requests.get(url).json()['articles']
 
     # Polygon News API call
@@ -120,26 +131,100 @@ def runNewsAnalysis(stock, api):
     file = open('news.txt', 'w')
 
     sentiment = 0
+
+    # Iterates through every news article from News API
     for line in response:
         words = str(line['content'])
         file.write(words)
 
-        document = {
-            "content": words,
-            "type": enums.Document.Type.PLAIN_TEXT}
+        if not natural_lang:
 
-        # Detects the sentiment of the text
-        sentiment += client.analyze_sentiment(document=document,
-                                              encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
+            # Runs Flair sentiment analysis
+            sentence = Sentence(str(words))
+            flair_sentiment.predict(sentence)
+            total_sentiment = sentence.labels
+            logging.info(str(words))
 
+            # Checks to see if the sentiment is negative and subtracts by how negative flair thinks it is
+            if total_sentiment[0].value == 'NEGATIVE':
+                logging.warning(str(total_sentiment[0].value) + " : " + str(total_sentiment[0].to_dict()['confidence']))
+                sentiment -= total_sentiment[0].to_dict()['confidence'] / 2  # Flair favors negative outcomes
+
+            # Checks to see if the sentiment is positive and adds how positive flair thinks it is
+            elif total_sentiment[0].value == 'POSITIVE':
+                logging.debug(str(total_sentiment[0].value) + " : " + str(total_sentiment[0].to_dict()['confidence']))
+                sentiment += total_sentiment[0].to_dict()['confidence']
+
+        # Checks to see if you're using natural language
+        else:
+
+            document = {
+                "content": words,
+                "type": enums.Document.Type.PLAIN_TEXT}
+
+            # Check for connection errors and retry 30 times
+            cnt = 0
+            while cnt <= 30:
+                try:
+                    # Detects the sentiment of the text
+                    sentiment += client.analyze_sentiment(document=document,
+                                                          encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
+                    break
+
+                except:
+                    logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+                    time.sleep(30)
+                    cnt += 1
+                    continue
+
+    # Iterates through every news article on Polygon news
     for source in news:
         words = source.summary
-        document = {
-            "content": words,
-            "type": enums.Document.Type.PLAIN_TEXT}
+        file.write(words)
+        file.write('\n')
 
-        # Detects the sentiment of the text
-        sentiment += client.analyze_sentiment(document=document,
-                                              encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
+        # Checks to see if you're using Flair
+        if not natural_lang:
+
+            # Runs Flair sentiment analysis
+            sentence = Sentence(str(words))
+            flair_sentiment.predict(sentence)
+            total_sentiment = sentence.labels
+            logging.info(str(words))
+
+            # Checks to see if the sentiment is negative and subtracts by how negative flair thinks it is
+            if total_sentiment[0].value == 'NEGATIVE':
+                logging.warning(str(total_sentiment[0].value) + " : " + str(total_sentiment[0].to_dict()['confidence']))
+                sentiment -= total_sentiment[0].to_dict()['confidence'] / 2  # Flair favors negative outcomes
+
+            # Checks to see if the sentiment is positive and adds how positive flair thinks it is
+            elif total_sentiment[0].value == 'POSITIVE':
+                logging.debug(str(total_sentiment[0].value) + " : " + str(total_sentiment[0].to_dict()['confidence']))
+                sentiment += total_sentiment[0].to_dict()['confidence']
+
+        # Checks to see if you're using natural language
+        else:
+
+            document = {
+                "content": words,
+                "type": enums.Document.Type.PLAIN_TEXT}
+
+            # Check for connection errors and retry 30 times
+            cnt = 0
+            while cnt <= 30:
+
+                try:
+                    # Detects the sentiment of the text
+                    sentiment += client.analyze_sentiment(document=document,
+                                                          encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
+                    break
+
+                except:
+                    logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+                    time.sleep(30)
+                    cnt += 1
+                    continue
+
+    file.close()
 
     return sentiment

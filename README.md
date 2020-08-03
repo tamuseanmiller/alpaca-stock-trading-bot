@@ -4,7 +4,9 @@ This project is a Q-learning based bot that uses historical data to make a worki
 
 ## Results
 
-I'll post some results after I do some more testing. WIP
+After giving the bot a $100,000 paper account and letting it run in and around a global pandemic these were the results.
+
+![Results](images/results.PNG)
 
 ## Downsides
 
@@ -20,7 +22,7 @@ To use this script you have to go out and get a few API keys:
 
 [Make a Funded Alpaca Brokerage Account](https://alpaca.markets/)
 
-[Apply for the Natural Language API](https://cloud.google.com/natural-language/)
+Optional now: [Apply for the Natural Language API](https://cloud.google.com/natural-language/)
 
 After you finish with these few steps, write down your API keys, you'll need them below.
 
@@ -42,26 +44,25 @@ sudo apt-get install python 3.6
 sudo apt-get -y install python3-pip
 sudo apt install python-pip
 pip install --upgrade pip
-sudo pip3 install -r requirements.txt
 ```
 
-I tried to make the use of this project as simple as possible and you only need a few commands to set it up. Most of the packages you need to install are from the requirements.txt file
+I tried to make the use of this project as simple as possible and you only need a few commands to set it up. Most of the packages you need to install are from the requirements.txt file. If there are any libraries that don't install, just install which imports give you an error when you first start the script.
 
 ```bash
 pip3 install -r requirements.txt
 ```
 
-Now you can begin training. The bot automatically grabs the data in 15 minute periods. The basic structure is:
+Now you can begin training. The bot automatically grabs the data in 1 minute periods, all it needs is the name of the model to be saved and which stock ticker that you want to train it off of. Basically the script makes several api calls to fill the training.csv data file with the last 'n' years of stock data. After it fills training.csv, it will then create test.csv which will act as the last 10 days of data. The basic structure is:
 
 ```bash
-python3 train.py <years> [--window-size=<window-size>] [--batch-size=<batch-size>] [--episode-count=<episode-count>] [--model-name=<model-name>] [--pretrained] [--debug]
+python3 train.py <years> [--window-size=<window-size>] [--batch-size=<batch-size>] [--episode-count=<episode-count>] [--model-name=<model-name>] [--pretrained] [--stock-name=<stock-name>] [--debug]
 ```
 
 
 Example Usage:
 
 ```bash
-python3 train.py 10 --window-size=10 --episode-count=10 --model-name=model_alpha --pretrained --debug
+python3 train.py 10 --window-size=10 --episode-count=10 --model-name=model_alpha --stock_name=AMD --pretrained --debug
 ```
 
 I think the rest is pretty self explanatory.
@@ -69,7 +70,7 @@ I think the rest is pretty self explanatory.
 Once you're done training, run the eval script or just run the entire bot:
 
 ```bash
-eval.py <eval-stock> [--window-size=<window-size>] [--model-name=<model-name>] [--run-bot=<y/n] [--stock-name=<stock-ticker>] [--debug]
+eval.py <eval-stock> [--window-size=<window-size>] [--model-name=<model-name>] [--run-bot=<y/n>] [--stock-name=<stock-ticker>] [--natural-lang] [--debug]
 ```
 
 
@@ -80,6 +81,15 @@ python3 eval.py test --window-size=10 --model-name=model_alpha --run-bot=y --sto
 ```
 
 Now everything should be good to go!
+
+## Extra Tidbits of Useful Information
+
+*The sentiment analysis of news runs by default off of Flair, you can enable Google's Natural Language just by adding the '--natural-lang' command.
+
+*News runs off of the NewsAPI and Polygon news.
+
+*If the bot runs continually day to day, it will continue learning over time with more trades.
+
 
 ## Credits
 

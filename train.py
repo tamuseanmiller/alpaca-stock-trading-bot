@@ -4,7 +4,7 @@ Script for training Stock Trading Bot.
 Usage:
   train.py <years> [--window-size=<window-size>]
     [--batch-size=<batch-size>] [--episode-count=<episode-count>] 
-    [--model-name=<model-name>] [--pretrained] [--debug]
+    [--model-name=<model-name>] [--pretrained] [--debug] [--stock-name=<stock-name>]
 
 Options:
   --window-size=<window-size>       Size of the n-day window stock data representation used as the feature vector. [default: 10]
@@ -13,10 +13,12 @@ Options:
   --model-name=<model-name>         Name of the pretrained model to use (will eval all models in `models/` if unspecified). [default: model_debug]
   --pretrained                      Specifies whether to continue training a previously trained model (reads `model-name`).
   --debug                           Specifies whether to use verbose logs during eval operation.
+  --stock-name=<stock-name>         Specifies the specific stock to train
 """
 
 import logging
 import datetime
+import time
 
 import coloredlogs
 
@@ -66,52 +68,65 @@ if __name__ == "__main__":
     model_name = args["--model-name"]
     pretrained = args["--pretrained"]
     debug = args["--debug"]
+    stock_name = args["--stock-name"]
 
     api = tradeapi.REST()
     today = datetime.date.today()
-
-    # All tickers to use when training
-    tickers = ['AAPL', 'AMD', 'BLK', 'BX', 'DJI', 'GOOG', 'GOOGL', 'SPX', 'SVX', 'JPM', 'MSFT', 'NDX', 'QCOM', 'TOT']
 
     coloredlogs.install(level="DEBUG")
     switch_k_backend_device()
 
     # for loop for each ticker for training
-    for ticker in tickers:
+    # for ticker in tickers:
 
-        # Iterate over past
-        past = datetime.date.today() - datetime.timedelta(days=10)
+    ticker = stock_name
 
-        # Open training file
-        file = open('data/training.csv', 'w')
+    # Check for connection errors and retry 30 times
+    cnt = 0
+    while cnt <= 30:
 
-        file.write('Adj Close\n')
+        # try:
 
-        # Iterate every ticker through the number of years
-        for iterations in range(int(years)*40):
+            # Iterate over past
+            past = datetime.date.today() - datetime.timedelta(days=10)
 
-            data = api.get_barset(timeframe='minute', symbols=ticker, limit=100, end=past)
-            past = past - datetime.timedelta(days=10)
+            # Open training file
+            file = open('data/training.csv', 'w')
+
+            file.write('Adj Close\n')
+
+            # Iterate every ticker through the number of years
+            for iterations in range(int(years) * 40):
+
+                data = api.get_barset(timeframe='minute', symbols=ticker, limit=100, end=past)
+                past = past - datetime.timedelta(days=10)
+
+                # Writes c-values
+                for group in data.get(ticker):
+                    file.write(str(group.c) + '\n')
+            file.close()
+
+            # Open test file
+            file = open('data/test.csv', 'w')
+
+            file.write('Adj Close\n')
+
+            # 10 days of info
+            data = api.get_barset(timeframe='15Min', symbols=ticker, limit=960, end=today)
 
             # Writes c-values
             for group in data.get(ticker):
                 file.write(str(group.c) + '\n')
-        file.close()
+            file.close()
+            break
 
-        # Open test file
-        file = open('data/test.csv', 'w')
+        # except:
+        #     logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+        #     time.sleep(30)
+        #     cnt += 1
+        #     continue
 
-        file.write('Adj Close\n')
-
-        # 10 days of info
-        data = api.get_barset(timeframe='15Min', symbols=ticker, limit=960, end=today)
-
-        # Writes c-values
-        for group in data.get(ticker):
-            file.write(str(group.c) + '\n')
-        file.close()
-
-    try:
-        main(window_size, batch_size, ep_count, model_name, pretrained, debug)
-    except KeyboardInterrupt:
-        print("Aborted!")
+try:
+    main(window_size, batch_size, ep_count, model_name, pretrained, debug)
+except KeyboardInterrupt:
+    print("Aborted!")
