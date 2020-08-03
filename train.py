@@ -85,7 +85,11 @@ if __name__ == "__main__":
     cnt = 0
     while cnt <= 30:
 
+<<<<<<< HEAD
         # try:
+=======
+        try:
+>>>>>>> master
 
             # Iterate over past
             past = datetime.date.today() - datetime.timedelta(days=10)
@@ -120,11 +124,19 @@ if __name__ == "__main__":
             file.close()
             break
 
+<<<<<<< HEAD
         # except:
         #     logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
         #     time.sleep(30)
         #     cnt += 1
         #     continue
+=======
+        except:
+            logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+            time.sleep(30)
+            cnt += 1
+            continue
+>>>>>>> master
 
 try:
     main(window_size, batch_size, ep_count, model_name, pretrained, debug)

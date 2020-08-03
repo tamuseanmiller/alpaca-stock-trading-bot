@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="126527f1-f1bd-4dda-8b50-3c5855bc202c" name="Default Changelist" comment="Fixed Train, now should work automatically. Also added functionality to sell all stocks traded at the beginning of the next day">
+      <change beforePath="$PROJECT_DIR$/data/test.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/test.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/training.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/training.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eval.py" beforeDir="false" afterPath="$PROJECT_DIR$/eval.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/model_AMD_440" beforeDir="false" afterPath="$PROJECT_DIR$/models/model_AMD_440" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trading_bot/methods.py" beforeDir="false" afterPath="$PROJECT_DIR$/trading_bot/methods.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trading_bot/sentiment.py" beforeDir="false" afterPath="$PROJECT_DIR$/trading_bot/sentiment.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trading_bot/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/trading_bot/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/train.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\Sean\OneDrive\alpaca-stock-trading-bot\.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="JupyterTrust" id="1ac97e34-be57-4d50-9fa2-959be3864b2e" />
+  <component name="ProjectId" id="1WBmksJscOyE1WRsbVy4q1GQQ1D" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="PyConsoleConfigurable.Python Console" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="trading-bot-master" is-module-sdk="true">
+        <envs>
+          <env key="APCA_API_BASE_URL" value="https://paper-api.alpaca.markets,APCA_API_SECRET_KEY=cEAWZbYiGSVp01J1LEv6Wj1Z81deuxz/SqwgQdMh,APCA_API_KEY_ID=PKN7O8R81W5S3ERFXCTL" />
+        </envs>
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="trading-bot-master" />
+        <option name="myEnvs">
+          <map>
+            <entry key="APCA_API_BASE_URL" value="https://paper-api.alpaca.markets,APCA_API_SECRET_KEY=cEAWZbYiGSVp01J1LEv6Wj1Z81deuxz/SqwgQdMh,APCA_API_KEY_ID=PKN7O8R81W5S3ERFXCTL" />
+          </map>
+        </option>
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Sean\OneDrive\trading-bot-master" />
+      <recent name="C:\Users\Sean\OneDrive\trading-bot-master\models" />
+      <recent name="C:\Users\Sean\OneDrive\trading-bot-master\data" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Sean\OneDrive\trading-bot-master\data" />
+      <recent name="C:\Users\Sean\OneDrive\trading-bot-master\models" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.eval">
+    <configuration default="true" type="DjangoTestsConfigurationType">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="eval" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="trading-bot-master" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="GOOGLE_APPLICATION_CREDENTIALS" value="natural_language_creds.json" />
+        <env name="APCA_API_BASE_URL" value="https://paper-api.alpaca.markets" />
+        <env name="APCA_API_KEY_ID" value="PKQEUTQXQFJSFSL8RFZI" />
+        <env name="APCA_API_SECRET_KEY" value="/udSzrZpUnBYfQXdWCP4Cy7YrB6cfBxKPnJgXNFf" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/eval.py" />
+      <option name="PARAMETERS" value="test --model-name=model_AMD_440 --debug --run-bot=y --stock-name=AMD" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="methods" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/trading_bot" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/trading_bot/methods.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="movingAverages" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="trading-bot-master" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="GOOGLE_APPLICATION_CREDENTIALS" value="natural_language_creds.json1" />
+        <env name="APCA_API_BASE_URL" value="https://paper-api.alpaca.markets" />
+        <env name="APCA_API_KEY_ID" value="PKQEUTQXQFJSFSL8RFZI" />
+        <env name="APCA_API_SECRET_KEY" value="/udSzrZpUnBYfQXdWCP4Cy7YrB6cfBxKPnJgXNFf" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/movingAverages.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="sentiment" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/trading_bot" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/trading_bot/sentiment.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="train" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="trading-bot-master" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="APCA_API_KEY_ID" value="PKQEUTQXQFJSFSL8RFZI " />
+        <env name="APCA_API_SECRET_KEY" value="/udSzrZpUnBYfQXdWCP4Cy7YrB6cfBxKPnJgXNFf " />
+        <env name="GOOGLE_APPLICATION_CREDENTIALS" value="natural_language_creds.json" />
+      </envs>
+      <option name="SDK_HOME" value="C:\ProgramData\Anaconda3\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/train.py" />
+      <option name="PARAMETERS" value="1 --episode-count=10 --model-name=test --debug" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="py.test">
+      <module name="alpaca-stock-trading-bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_keywords" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.eval" />
+      <item itemvalue="Python.methods" />
+      <item itemvalue="Python.sentiment" />
+      <item itemvalue="Python.train" />
+      <item itemvalue="Python.movingAverages" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.eval" />
+        <item itemvalue="Python.train" />
+        <item itemvalue="Python.movingAverages" />
+        <item itemvalue="Python.methods" />
+        <item itemvalue="Python.sentiment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="126527f1-f1bd-4dda-8b50-3c5855bc202c" name="Default Changelist" comment="" />
+      <created>1578631507955</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1578631507955</updated>
+      <workItem from="1578631521670" duration="74706000" />
+      <workItem from="1578952825712" duration="17106000" />
+      <workItem from="1578973527986" duration="183000" />
+      <workItem from="1578973732909" duration="13920000" />
+      <workItem from="1579039003120" duration="13420000" />
+      <workItem from="1579197733075" duration="1358000" />
+      <workItem from="1579289700513" duration="3783000" />
+      <workItem from="1579521106917" duration="365000" />
+      <workItem from="1579834731802" duration="8269000" />
+      <workItem from="1579971583140" duration="4428000" />
+      <workItem from="1579981811433" duration="113000" />
+      <workItem from="1579984609968" duration="1045000" />
+      <workItem from="1580829125621" duration="10798000" />
+      <workItem from="1581115712666" duration="13193000" />
+      <workItem from="1581476682792" duration="7340000" />
+      <workItem from="1587738506904" duration="1061000" />
+      <workItem from="1587744606646" duration="50000" />
+      <workItem from="1589036384107" duration="33000" />
+      <workItem from="1589642050731" duration="57000" />
+      <workItem from="1590856959990" duration="564000" />
+      <workItem from="1590944784444" duration="460000" />
+      <workItem from="1590946447391" duration="699000" />
+      <workItem from="1595115600177" duration="494000" />
+      <workItem from="1595116573906" duration="3617000" />
+      <workItem from="1595430382998" duration="6576000" />
+      <workItem from="1596237740446" duration="3002000" />
+      <workItem from="1596290318620" duration="10815000" />
+    </task>
+    <task id="LOCAL-00001" summary="Fixed Train, now should work automatically. Also added functionality to sell all stocks traded at the beginning of the next day">
+      <created>1587739241570</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1587739241571</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Fixed Train, now should work automatically. Also added functionality to sell all stocks traded at the beginning of the next day" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Train, now should work automatically. Also added functionality to sell all stocks traded at the beginning of the next day" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="663" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596307423865">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="663" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1596307423865" />
+    <state x="715" y="143" key="#xdebugger.evaluate" timestamp="1596303726770">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="715" y="143" key="#xdebugger.evaluate/0.0.1920.1050@0.0.1920.1050" timestamp="1596303726770" />
+    <state x="583" y="34" key="CommitChangelistDialog2" timestamp="1596307765995">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="583" y="34" key="CommitChangelistDialog2/0.0.1920.1050@0.0.1920.1050" timestamp="1596307765995" />
+    <state x="943" y="303" key="EnvironmentVariablesDialog" timestamp="1590947431089">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="943" y="303" key="EnvironmentVariablesDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1590947431089" />
+    <state x="740" y="281" key="FileChooserDialogImpl" timestamp="1596290314211">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="740" y="281" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1596290314211" />
+    <state width="1877" height="342" key="GridCell.Tab.0.bottom" timestamp="1596328047867">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="342" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596328047867" />
+    <state width="1877" height="342" key="GridCell.Tab.0.center" timestamp="1596328047867">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="342" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596328047867" />
+    <state width="1877" height="342" key="GridCell.Tab.0.left" timestamp="1596328047866">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="342" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596328047866" />
+    <state width="1877" height="342" key="GridCell.Tab.0.right" timestamp="1596328047867">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="342" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596328047867" />
+    <state width="1877" height="342" key="GridCell.Tab.1.bottom" timestamp="1596328047867">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="342" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596328047867" />
+    <state width="1877" height="342" key="GridCell.Tab.1.center" timestamp="1596328047867">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="342" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596328047867" />
+    <state width="1877" height="342" key="GridCell.Tab.1.left" timestamp="1596328047867">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="342" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596328047867" />
+    <state width="1877" height="342" key="GridCell.Tab.1.right" timestamp="1596328047867">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="1877" height="342" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596328047867" />
+    <state x="461" y="168" key="SettingsEditor" timestamp="1590945243106">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="461" y="168" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1590945243106" />
+    <state x="552" y="255" key="Vcs.Push.Dialog.v2" timestamp="1587744639906">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="552" y="255" key="Vcs.Push.Dialog.v2/0.0.1920.1050@0.0.1920.1050" timestamp="1587744639906" />
+    <state x="646" y="241" width="627" height="568" key="find.popup" timestamp="1595117790515">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="646" y="241" width="627" height="568" key="find.popup/0.0.1920.1050@0.0.1920.1050" timestamp="1595117790515" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/trading_bot_master$eval.coverage" NAME="eval Coverage Results" MODIFIED="1579023377898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/alpaca_stock_trading_bot$eval.coverage" NAME="eval Coverage Results" MODIFIED="1596307903038" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/alpaca_stock_trading_bot$movingAverages.coverage" NAME="movingAverages Coverage Results" MODIFIED="1580829800452" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/trading_bot_master$train.coverage" NAME="train Coverage Results" MODIFIED="1579025910079" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/trading_bot_master$methods.coverage" NAME="methods Coverage Results" MODIFIED="1578673461685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/trading_bot" />
+    <SUITE FILE_PATH="coverage/alpaca_stock_trading_bot$train.coverage" NAME="train Coverage Results" MODIFIED="1595431773494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/trading_bot_master$sentiment.coverage" NAME="sentiment Coverage Results" MODIFIED="1578636177828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/trading_bot" />
+  </component>
+</project>

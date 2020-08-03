@@ -52,7 +52,11 @@ I tried to make the use of this project as simple as possible and you only need 
 pip3 install -r requirements.txt
 ```
 
+<<<<<<< HEAD
 Now you can begin training. The bot automatically grabs the data in 1 minute periods, all it needs is the name of the model to be saved and which stock ticker that you want to train it off of. Basically the script makes several api calls to fill the training.csv data file with the last 'n' years of stock data. After it fills training.csv, it will then create test.csv which will act as the last 10 days of data. The basic structure is:
+=======
+Now you can begin training. The bot automatically grabs the data in 1 minute periods. The basic structure is:
+>>>>>>> master
 
 ```bash
 python3 train.py <years> [--window-size=<window-size>] [--batch-size=<batch-size>] [--episode-count=<episode-count>] [--model-name=<model-name>] [--pretrained] [--stock-name=<stock-name>] [--debug]
