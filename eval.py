@@ -136,9 +136,12 @@ def decisions(agent, data, window_size, debug, stock, api):
 
                 # ****COMMENT THIS OUT IF YOU DON'T WANT TO SELL ALL OF THE STOCKS AT THE BEGINNING OF NEW DAY****
                 # Sell all stock using Alpaca API at the beginning of the new day
-                if (t == data_length - 1) and len(orders) != 0:
+                if t == data_length - 1:
                     qty = api.get_position(stock).qty
-                    submit_order_helper(qty - 2, stock, 'sell', api)
+                    
+                    # Checks to make sure you own more than 2 stocks
+                    if qty > 2:
+                      submit_order_helper(qty - 2, stock, 'sell', api)
 
         # Checks for if the original 1000 data points were tested
         if t == data_length - 1:
