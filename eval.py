@@ -140,8 +140,8 @@ def decisions(agent, data, window_size, debug, stock, api):
                     qty = api.get_position(stock).qty
                     
                     # Checks to make sure you own more than 2 stocks
-                    if qty > 2:
-                      submit_order_helper(qty - 2, stock, 'sell', api)
+                    if int(qty) > 2:
+                      submit_order_helper(int(qty) - 2, stock, 'sell', api)
 
         # Checks for if the original 1000 data points were tested
         if t == data_length - 1:
