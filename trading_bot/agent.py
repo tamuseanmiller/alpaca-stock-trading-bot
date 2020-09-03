@@ -125,7 +125,7 @@ class Agent:
         self.model.save('models/' + self.model_name)
 
     def soft_save(self):
-        self.model.save('models/{}'.format(self.model_name))
+        self.model.save('models/' + self.model_name)
 
     def load(self):
         return load_model('models/' + self.model_name, custom_objects=self.custom_objects)

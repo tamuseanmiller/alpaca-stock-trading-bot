@@ -18,12 +18,9 @@ from google.cloud.language import types
 import requests
 import coloredlogs
 import logging
-<<<<<<< HEAD
 import flair
 from flair.models import TextClassifier
 from flair.data import Sentence
-=======
->>>>>>> master
 
 
 def decide_stock():
@@ -68,12 +65,8 @@ def decide_stock():
     driver.quit()
 
 
-<<<<<<< HEAD
 def runNewsAnalysis(stock, api, natural_lang):
     logging.warning("Running sentiment with Natural Language set to: " + str(natural_lang))
-=======
-def runNewsAnalysis(stock, api):
->>>>>>> master
     coloredlogs.install(level="DEBUG")
     url = 'https://www.tradingview.com/screener/'
 
@@ -124,22 +117,12 @@ def runNewsAnalysis(stock, api):
     # NewsAPI API call
     url = ('https://newsapi.org/v2/everything?'
            'apiKey=d42e88f1fb624084891e89df549c06ff&'
-<<<<<<< HEAD
            'qInTitle=\"' + stock + '\"&'
                                    'sources=reuters, the-wall-street-journal, cnbc&'
                                    'language=en&'
                                    'sortBy=publishedAt&'
                                    'pageSize=100')
 
-=======
-           'q=' + stock + '&'
-                          'sources=reuters, the-wall-street-journal, cnbc&'
-                          'language=en&'
-                          'sortBy=publishedAt&'
-                          'pageSize=100')
-
-    # url = ('https://newsapi.org/v2/everything?apiKey=d42e88f1fb624084891e89df549c06ff&q=yeet&sources=reuters,the-wall-street-journal,cnbc&language=en&sortBy=publishedAt&pageSize=100')
->>>>>>> master
     response = requests.get(url).json()['articles']
 
     # Polygon News API call
@@ -154,7 +137,6 @@ def runNewsAnalysis(stock, api):
         words = str(line['content'])
         file.write(words)
 
-<<<<<<< HEAD
         if not natural_lang:
 
             # Runs Flair sentiment analysis
@@ -244,48 +226,5 @@ def runNewsAnalysis(stock, api):
                     continue
 
     file.close()
-=======
-        document = {
-            "content": words,
-            "type": enums.Document.Type.PLAIN_TEXT}
-
-        # Check for connection errors and retry 30 times
-        cnt = 0
-        while cnt <= 30:
-            
-            try:
-                # Detects the sentiment of the text
-                sentiment += client.analyze_sentiment(document=document,
-                                                      encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
-                break
-
-            except:
-                logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
-                time.sleep(30)
-                cnt+=1
-                continue
-
-    for source in news:
-        words = source.summary
-        document = {
-            "content": words,
-            "type": enums.Document.Type.PLAIN_TEXT}
-
-        # Check for connection errors and retry 30 times
-        cnt = 0
-        while cnt <= 30:
-
-            try:
-                # Detects the sentiment of the text
-                sentiment += client.analyze_sentiment(document=document,
-                                                      encoding_type=enums.EncodingType.UTF8).document_sentiment.magnitude
-                break
-
-            except:
-                logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
-                time.sleep(30)
-                cnt+=1
-                continue
->>>>>>> master
 
     return sentiment

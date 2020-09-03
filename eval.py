@@ -77,7 +77,7 @@ def decisions(agent, data, window_size, debug, stock, api):
                     break
 
                 except:
-                    logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+                    logging.warning("Error in checking market status, retrying in 30s (" + str(cnt) + "/30)")
                     time.sleep(30)
                     cnt += 1
                     continue
@@ -108,7 +108,7 @@ def decisions(agent, data, window_size, debug, stock, api):
                     break
 
                 except:
-                    logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+                    logging.warning("Error in checking market status, retrying in 30s (" + str(cnt) + "/30)")
                     time.sleep(30)
                     cnt += 1
                     continue
@@ -136,9 +136,17 @@ def decisions(agent, data, window_size, debug, stock, api):
 
                 # ****COMMENT THIS OUT IF YOU DON'T WANT TO SELL ALL OF THE STOCKS AT THE BEGINNING OF NEW DAY****
                 # Sell all stock using Alpaca API at the beginning of the new day
-                if (t == data_length - 1) and len(orders) != 0:
-                    qty = api.get_position(stock).qty
-                    submit_order_helper(qty - 2, stock, 'sell', api)
+                if t == data_length - 1:
+
+                    try:
+                        qty = api.get_position(stock).qty
+                        
+                    except:
+                        logging.warning("Error fetching stock position, may not exist.")
+
+                    # Just checks to see if I'm trying to sell zero or a negative number of stocks
+                    if int(qty) > -2:
+                        submit_order_helper(int(qty) - 2, stock, 'sell', api)
 
         # Checks for if the original 1000 data points were tested
         if t == data_length - 1:
@@ -152,7 +160,7 @@ def decisions(agent, data, window_size, debug, stock, api):
                     break
 
                 except:
-                    logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+                    logging.warning("Unable to retrieve barset, retrying in 30s (" + str(cnt) + "/30)")
                     time.sleep(30)
                     cnt += 1
                     continue
@@ -172,6 +180,10 @@ def decisions(agent, data, window_size, debug, stock, api):
 
             # Buy using Alpaca API, only if it is realtime data
             if t == data_length - 1:
+                file = open('data/' + stock + "_trading_data.csv", 'a')
+                file.write(str(datetime.datetime.now().strftime("%m/%d/%Y,%H:%M:%S")) + ',BUY,$' + str(
+                    date.get(stock)[0].c) + '\n')
+                file.close()
                 orders.append(submit_order_helper(1, stock, 'buy', api))
 
             # Appends and logs
@@ -201,6 +213,10 @@ def decisions(agent, data, window_size, debug, stock, api):
 
             # Sell's one stock using Alpaca's API if it is in realtime
             if t == data_length - 1:
+                file = open('data/' + stock + "_trading_data.csv", 'a')
+                file.write(str(datetime.datetime.now().strftime("%m/%d/%Y,%H:%M:%S")) + ',SELL,$' + str(
+                    date.get(stock)[0].c) + '\n')
+                file.close()
                 submit_order_helper(1, stock, 'sell', api)
             history.append((data[t], "SELL"))
             if debug:
@@ -216,6 +232,12 @@ def decisions(agent, data, window_size, debug, stock, api):
                 logging.debug("Hold at: {} | Sentiment: {} | Total Profit: {}".format(
                     format_currency(data[t]), format_sentiment(sentiments), format_currency(total_profit)))
                 # format_currency(data[t])))
+
+            if t == data_length - 1:
+                file = open('data/' + stock + "_trading_data.csv", 'a')
+                file.write(str(datetime.datetime.now().strftime("%m/%d/%Y,%H:%M:%S")) + ',HOLD,$' + str(
+                    date.get(stock)[0].c) + '\n')
+                file.close()
 
         agent.memory.append((state, action, reward, next_state, False))
         if len(agent.memory) > 32:
@@ -254,18 +276,21 @@ def alpaca_trading_bot(stock_name, window_size=10, model_name='model_debug'):
     while cnt <= 30:
         try:
             # Get date for ticker
-            date = api.get_barset(timeframe='15Min', symbols=stock_name, limit=1000, end=datetime.datetime.now())
+            date = api.polygon.historic_agg_v2(stock_name, 1, 'minute',
+                                       _from=str(datetime.date.today() - datetime.timedelta(days=1)),
+                                       to=str(datetime.date.today()), limit=1000).df
+            # date = api.get_barset(timeframe='minute', symbols=stock_name, limit=1000, end=datetime.datetime.now())
             break
 
         except:
-            logging.warning("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
+            logging.warning("Error retrieving initial 1000 prices, retrying in 30s (" + str(cnt) + "/30)")
             time.sleep(30)
             cnt += 1
             continue
 
     # Write ticker csv
-    for minutes in date.get(stock_name):
-        file.write(str(minutes.c))
+    for minutes in date['close']:
+        file.write(str(minutes))
         file.write('\n')
 
     file.close()

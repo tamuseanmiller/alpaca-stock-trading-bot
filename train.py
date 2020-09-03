@@ -2,7 +2,7 @@
 Script for training Stock Trading Bot.
 
 Usage:
-  train.py <years> [--window-size=<window-size>]
+  train.py <months> [--window-size=<window-size>]
     [--batch-size=<batch-size>] [--episode-count=<episode-count>] 
     [--model-name=<model-name>] [--pretrained] [--debug] [--stock-name=<stock-name>]
 
@@ -61,7 +61,7 @@ def main(window_size, batch_size, ep_count, model_name, pretrained, debug):
 if __name__ == "__main__":
     args = docopt(__doc__)
 
-    years = args["<years>"]
+    months = args["<months>"]
     window_size = int(args["--window-size"])
     batch_size = int(args["--batch-size"])
     ep_count = int(args["--episode-count"])
@@ -71,58 +71,74 @@ if __name__ == "__main__":
     stock_name = args["--stock-name"]
 
     api = tradeapi.REST()
-    today = datetime.date.today()
+    today = datetime.datetime.today()
 
     coloredlogs.install(level="DEBUG")
     switch_k_backend_device()
 
-    # for loop for each ticker for training
-    # for ticker in tickers:
-
     ticker = stock_name
+
+    # Iterate over past
+    past = datetime.date.today() - datetime.timedelta(days=3)
+
+    # Open training file
+    file = open('data/training.csv', 'w')
+
+    file.write('Adj Close\n')
+
+    # Iterate every ticker through the number of months
+    for iterations in range(int(months) * 11):
+
+        # Check for connection errors and retry 30 times
+        cnt = 0
+        while cnt <= 30:
+
+            try:
+                # Grabs three days worth of data
+                data = api.polygon.historic_agg_v2(stock_name, 1, 'minute', _from=past - datetime.timedelta(days=3),
+                                                   to=past, limit=4320).df
+                break
+
+            except:
+                logging.debug("Error connecting to Polygon, retrying in 30s (" + str(cnt) + "/30)")
+                time.sleep(30)
+                cnt += 1
+                continue
+
+        past = past - datetime.timedelta(days=3)
+
+        # Writes c-values
+        for group in data['close']:
+            file.write(str(group) + '\n')
+
+    file.close()
+
+    # Open test file
+    file = open('data/test.csv', 'w')
+
+    file.write('Adj Close\n')
 
     # Check for connection errors and retry 30 times
     cnt = 0
     while cnt <= 30:
 
-            # Iterate over past
-            past = datetime.date.today() - datetime.timedelta(days=10)
-
-            # Open training file
-            file = open('data/training.csv', 'w')
-
-            file.write('Adj Close\n')
-
-            # Iterate every ticker through the number of years
-            for iterations in range(int(years) * 40):
-
-                data = api.get_barset(timeframe='minute', symbols=ticker, limit=100, end=past)
-                past = past - datetime.timedelta(days=10)
-
-                # Writes c-values
-                for group in data.get(ticker):
-                    file.write(str(group.c) + '\n')
-            file.close()
-
-            # Open test file
-            file = open('data/test.csv', 'w')
-
-            file.write('Adj Close\n')
-
-            # 10 days of info
-            data = api.get_barset(timeframe='15Min', symbols=ticker, limit=960, end=today)
-
-            # Writes c-values
-            for group in data.get(ticker):
-                file.write(str(group.c) + '\n')
-            file.close()
+        try:
+            # 3 days of info
+            data = api.polygon.historic_agg_v2(stock_name, 1, 'minute',
+                                               _from=str(today.date() - datetime.timedelta(days=3)),
+                                               to=str(today.date())).df
             break
 
-        # except:
-        #     logging.debug("Lost connection, retrying in 30s (" + str(cnt) + "/30)")
-        #     time.sleep(30)
-        #     cnt += 1
-        #     continue
+        except:
+            logging.debug("Error connecting to Polygon, retrying in 30s (" + str(cnt) + "/30)")
+            time.sleep(30)
+            cnt += 1
+            continue
+
+    # Writes c-values
+    for group in data['close']:
+        file.write(str(group) + '\n')
+    file.close()
 
 try:
     main(window_size, batch_size, ep_count, model_name, pretrained, debug)

@@ -55,14 +55,14 @@ pip3 install -r requirements.txt
 Now you can begin training. The bot automatically grabs the data in 1 minute periods, all it needs is the name of the model to be saved and which stock ticker that you want to train it off of. Basically the script makes several api calls to fill the training.csv data file with the last 'n' years of stock data. After it fills training.csv, it will then create test.csv which will act as the last 10 days of data. The basic structure is:
 
 ```bash
-python3 train.py <years> [--window-size=<window-size>] [--batch-size=<batch-size>] [--episode-count=<episode-count>] [--model-name=<model-name>] [--pretrained] [--stock-name=<stock-name>] [--debug]
+python3 train.py <months> [--window-size=<window-size>] [--batch-size=<batch-size>] [--episode-count=<episode-count>] [--model-name=<model-name>] [--pretrained] [--stock-name=<stock-name>] [--debug]
 ```
 
 
 Example Usage:
 
 ```bash
-python3 train.py 10 --window-size=10 --episode-count=10 --model-name=model_alpha --stock_name=AMD --pretrained --debug
+python3 train.py 12 --window-size=10 --episode-count=10 --model-name=model_alpha --stock_name=AMD --pretrained --debug
 ```
 
 I think the rest is pretty self explanatory.
@@ -89,6 +89,13 @@ Now everything should be good to go!
 *News runs off of the NewsAPI and Polygon news.
 
 *If the bot runs continually day to day, it will continue learning over time with more trades.
+
+
+## Photos
+
+I thought the logging on the sentiment analysis looked quite clean.
+
+![Sentiment Analysis](images/analysis.PNG)
 
 
 ## Credits
