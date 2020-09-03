@@ -84,11 +84,11 @@ Now everything should be good to go!
 
 ## Extra Tidbits of Useful Information
 
-*The sentiment analysis of news runs by default off of Flair, you can enable Google's Natural Language just by adding the '--natural-lang' command.
+* The sentiment analysis of news runs by default off of Flair, you can enable Google's Natural Language just by adding the '--natural-lang' command.
 
-*News runs off of the NewsAPI and Polygon news.
+* News runs off of the NewsAPI and Polygon news.
 
-*If the bot runs continually day to day, it will continue learning over time with more trades.
+* If the bot runs continually day to day, it will continue learning over time with more trades.
 
 
 ## Photos
