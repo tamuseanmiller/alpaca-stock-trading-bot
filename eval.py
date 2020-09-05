@@ -145,7 +145,7 @@ def decisions(agent, data, window_size, debug, stock, api):
                         logging.warning("Error fetching stock position, may not exist.")
 
                     # Just checks to see if I'm trying to sell zero or a negative number of stocks
-                    if int(qty) > -2:
+                    if int(qty) > 2:
                         submit_order_helper(int(qty) - 2, stock, 'sell', api)
 
         # Checks for if the original 1000 data points were tested
