@@ -132,6 +132,7 @@ def decisions(agent, data, window_size, debug, stock, api):
                 total_profit = 0
                 orders = []
                 history = []
+                q = 0
                 agent.inventory = []
 
                 # ****COMMENT THIS OUT IF YOU DON'T WANT TO SELL ALL OF THE STOCKS AT THE BEGINNING OF NEW DAY****
