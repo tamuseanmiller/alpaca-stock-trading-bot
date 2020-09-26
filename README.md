@@ -1,4 +1,8 @@
 # Trading Bot
+![](https://img.shields.io/github/v/release/tamuseanmiller/alpaca-stock-trading-bot)
+![](https://img.shields.io/github/license/tamuseanmiller/alpaca-stock-trading-bot)
+![](https://img.shields.io/github/stars/tamuseanmiller/alpaca-stock-trading-bot)
+![](https://img.shields.io/tokei/lines/github/tamuseanmiller/alpaca-stock-trading-bot)
 
 This project is a Q-learning based bot that uses historical data to make a working model. After a model has been made the bot uses sentiment analysis of news articles as an extra data point. The bot runs on the Alpaca Stock Trading API and uses the Polygon data from Alpaca as well.
 
