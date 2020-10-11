@@ -44,7 +44,7 @@ scipy==1.4.1
 six==1.15.0
 tensorboard==2.2.2
 tensorboard-plugin-wit==1.7.0
-tensorflow
+tensorflow==2.2.0
 tensorflow-estimator==2.2.0
 termcolor==1.1.0
 tqdm==4.48.0
@@ -55,4 +55,6 @@ Werkzeug==1.0.1
 wincertstore==0.2
 wrapt==1.12.1
 yarl==1.4.2
-flair
+pymongo==3.11.0
+flair==0.5.1
+tqdm==4.48.0
