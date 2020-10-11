@@ -45,7 +45,8 @@ export GOOGLE_APPLICATION_CREDENTIALS=PATH_TO_CREDENTIALS_FILE
 After this, open up creds.py and add in your url.
 
 ```bash
-mongoInfo = "mongodb+srv://seanmiller:$upN3rd$M@stocks.m509r.mongodb.net/stock_trading_data?retryWrites=true&w=majority"
+# Add Info
+mongoInfo = ""
 
 client = pymongo.MongoClient(mongoInfo)
 ```
