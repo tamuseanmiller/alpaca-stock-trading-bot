@@ -84,14 +84,14 @@ I think the rest is pretty self explanatory.
 Once you're done training, run the eval script or just run the entire bot:
 
 ```bash
-eval.py <eval-stock> [--window-size=<window-size>] [--model-name=<model-name>] [--run-bot=<y/n>] [--stock-name=<stock-ticker>] [--natural-lang] [--debug]
+eval.py eval.py <eval-stock> [--window-size=<window-size>] [--model-name=<model-name>] [--run-bot] [--db-name=<db-name>] [--stock-name=<stock-ticker>] [--natural-lang] [--debug] [--mongo]
 ```
 
 
 Example Usage:
 
 ```bash
-python3 eval.py test --window-size=10 --model-name=model_alpha --run-bot=y --stock-name=GOOGL --debug
+python3 eval.py test --window-size=10 --db-name=stocks --model-name=model_alpha --run-bot --stock-name=GOOGL --mongo --debug
 ```
 
 Now everything should be good to go!
