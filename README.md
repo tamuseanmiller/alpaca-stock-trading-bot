@@ -28,6 +28,8 @@ To use this script you have to go out and get a few API keys:
 
 Optional now: [Apply for the Natural Language API](https://cloud.google.com/natural-language/)
 
+Optional: [Download MongoDB](https://www.mongodb.com/)
+
 After you finish with these few steps, write down your API keys, you'll need them below.
 
 The next thing you want to do is set up an Ubuntu server. I can write a detailed guide on how to set one up if it's requested enough. I would recommend [Google Cloud Compute VM](https://console.cloud.google.com/compute/) or [AWS EC2 Instance](https://aws.amazon.com/). Once you have that up and running you want to set your environmental variables you can do this by inputting this in console (Fill in your information).
@@ -38,6 +40,14 @@ export APCA_API_BASE_URL=BASE_API_URL
 export APCA_API_KEY_ID=YOUR_API_KEY_ID
 export APCA_API_SECRET_KEY=YOUR_SECRET_KEY
 export GOOGLE_APPLICATION_CREDENTIALS=PATH_TO_CREDENTIALS_FILE
+```
+
+After this, open up creds.py and add in your url.
+
+```bash
+mongoInfo = "mongodb+srv://seanmiller:$upN3rd$M@stocks.m509r.mongodb.net/stock_trading_data?retryWrites=true&w=majority"
+
+client = pymongo.MongoClient(mongoInfo)
 ```
 
 Install python
@@ -89,6 +99,8 @@ Now everything should be good to go!
 ## Extra Tidbits of Useful Information
 
 * The sentiment analysis of news runs by default off of Flair, you can enable Google's Natural Language just by adding the '--natural-lang' command.
+
+* To add MongoDB functionality add the '--db-name' and '--mongo' flags.
 
 * News runs off of the NewsAPI and Polygon news.
 
