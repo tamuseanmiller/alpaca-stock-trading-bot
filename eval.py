@@ -185,8 +185,8 @@ def decisions(agent, data, api):
                         logging.warning("Error fetching stock position, may not exist.")
 
                     # Just checks to see if I'm trying to sell zero or a negative number of stock
-                    if int(qty) > 0:
-                        submit_order_helper(int(qty), stock_name, 'sell', api)
+                    if int(qty) > 2:
+                        submit_order_helper(int(qty) - 1, 'sell', api, date)
 
         # Checks for if the original 1000 data points were tested, if they were it retrieves realtime data
         if t == data_length - 1:
@@ -219,8 +219,8 @@ def decisions(agent, data, api):
             # Buy using Alpaca API, only if it is realtime data
             if t == data_length - 1:
 
-                agent.inventory.append(data.get(stock_name)[0].c)
-                orders.append(submit_order_helper(1, stock_name, 'buy'))
+                agent.inventory.append(date.get(stock_name)[0].c)
+                orders.append(submit_order_helper(1, 'buy', api, date))
                 history.append((date.get(stock_name)[0].c, "BUY"))
                 if debug:
                     logging.debug(
@@ -250,7 +250,7 @@ def decisions(agent, data, api):
                 reward = max(date.get(stock_name)[0].c - bought_price, 0)
                 total_profit += date.get(stock_name)[0].c - bought_price
 
-                submit_order_helper(1, stock_name, 'sell')
+                submit_order_helper(1, 'sell', api, date)
 
                 history.append((date.get(stock_name)[0].c, "SELL"))
 
@@ -288,6 +288,7 @@ def decisions(agent, data, api):
                             collection.insert_one({"Datetime": datetime.datetime.now(),
                                                    "Action": "HOLD",
                                                    "Price": date.get(stock_name)[0].c})
+                            logging.info("Added Order to MongoDB")                       
                             break
                         except:
                             logging.warning(
@@ -326,7 +327,7 @@ def decisions(agent, data, api):
 
 
 # Submit an order if quantity is above 0.
-def submit_order_helper(qty, side, api):
+def submit_order_helper(qty, side, api, date):
     if int(qty) > 0:
         try:
             api.submit_order(stock_name, qty, side, "market", "day")
@@ -344,6 +345,7 @@ def submit_order_helper(qty, side, api):
                             collection.insert_one({"Datetime": datetime.datetime.now(),
                                                    "Action": "SELL",
                                                    "Price": date.get(stock_name)[0].c})
+                            logging.info("Added Order to MongoDB")
                             break
 
                         except:
@@ -370,6 +372,7 @@ def submit_order_helper(qty, side, api):
                             collection.insert_one({"Datetime": datetime.datetime.now(),
                                                    "Action": "BUY",
                                                    "Price": date.get(stock_name)[0].c})
+                            logging.info("Added Order to MongoDB")                       
                             break
 
                         except:
