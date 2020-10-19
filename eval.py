@@ -276,11 +276,7 @@ def alpaca_trading_bot(stock_name, window_size=10, model_name='model_debug'):
     cnt = 0
     while cnt <= 30:
         try:
-            # Get date for ticker
-            date = api.polygon.historic_agg_v2(stock_name, 1, 'minute',
-                                       _from=str(datetime.date.today() - datetime.timedelta(days=1)),
-                                       to=str(datetime.date.today()), limit=1000).df
-            # date = api.get_barset(timeframe='minute', symbols=stock_name, limit=1000, end=datetime.datetime.now())
+            date = api.get_barset(timeframe='minute', symbols=stock_name, limit=1000, end=datetime.datetime.now())
             break
 
         except:
@@ -290,8 +286,8 @@ def alpaca_trading_bot(stock_name, window_size=10, model_name='model_debug'):
             continue
 
     # Write ticker csv
-    for minutes in date['close']:
-        file.write(str(minutes))
+    for minutes in date.get(stock_name):
+        file.write(str(minutes.c))
         file.write('\n')
 
     file.close()

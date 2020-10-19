@@ -107,11 +107,6 @@ def runNewsAnalysis(stock, api, natural_lang):
 
     # driver.quit()
 
-    # Instantiates a client
-    # [START language_python_migration_client]
-    client = language.LanguageServiceClient()
-    # [END language_python_migration_client]
-
     flair_sentiment = flair.models.TextClassifier.load('en-sentiment')
 
     # NewsAPI API call
@@ -157,6 +152,11 @@ def runNewsAnalysis(stock, api, natural_lang):
 
         # Checks to see if you're using natural language
         else:
+
+            # Instantiates a client
+            # [START language_python_migration_client]
+            client = language.LanguageServiceClient()
+            # [END language_python_migration_client]
 
             document = {
                 "content": words,
