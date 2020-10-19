@@ -1,9 +1,4 @@
 import os
-os.environ['TF_MIN_GPU_MULTIPROCESSOR_COUNT'] = '2'
-os.environ['APCA_API_BASE_URL'] = 'https://paper-api.alpaca.markets'
-os.environ['APCA_API_KEY_ID'] = 'PKVQCPLCNIT0LP3PCG01'
-os.environ['APCA_API_SECRET_KEY'] = '24F86p4D6CjNw0YEL4ZtcoiTpeSepcJxXccfsZH5'
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'C:/Users/Mohit/PycharmProjects/SuperAIPR/newslstmstockbot/keys.json'
 from bs4 import BeautifulSoup
 import requests
 import os
