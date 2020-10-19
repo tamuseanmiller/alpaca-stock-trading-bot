@@ -25,7 +25,7 @@ def get_state(data, t, n_days):
     try:
         block = data[d: t + 1] if d >= 0 else -d * [data[0]] + data[0: t + 1]  # pad with t0
     except IndexError:
-        print('Hmmmmm... Right now im getting an IndexError. Which means its either the stock market is not open, in which case i would ask you to wait until the markets open, or its an internal error, which you have to investigate, [Line 26, File trading_bot/ops]')
+        print('\n')
         #block = -d * [data[0]] + data[0: t + 1]
     res = []
     for i in range(n_days - 1):
