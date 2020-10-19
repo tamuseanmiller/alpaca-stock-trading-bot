@@ -1,28 +1,15 @@
-"""
-Script for training Stock Trading Bot.
-
-Usage:
-  train.py <months> [--window-size=<window-size>]
-    [--batch-size=<batch-size>] [--episode-count=<episode-count>] 
-    [--model-name=<model-name>] [--pretrained] [--debug] [--stock-name=<stock-name>]
-
-Options:
-  --window-size=<window-size>       Size of the n-day window stock data representation used as the feature vector. [default: 10]
-  --batch-size=<batch-size>         Number of samples to train on in one mini-batch during training. [default: 16]
-  --episode-count=<episode-count>   Number of trading episodes to use for training. [default: 50]
-  --model-name=<model-name>         Name of the pretrained model to use (will eval all models in `models/` if unspecified). [default: model_debug]
-  --pretrained                      Specifies whether to continue training a previously trained model (reads `model-name`).
-  --debug                           Specifies whether to use verbose logs during eval operation.
-  --stock-name=<stock-name>         Specifies the specific stock to train
-"""
-
 import logging
 import datetime
 import time
-
+# import args
 import coloredlogs
-
+import os
 from docopt import docopt
+
+os.environ['APCA_API_BASE_URL'] = 'https://paper-api.alpaca.markets'
+os.environ['APCA_API_KEY_ID'] = 'PKVQCPLCNIT0LP3PCG01'
+os.environ['APCA_API_SECRET_KEY'] = '24F86p4D6CjNw0YEL4ZtcoiTpeSepcJxXccfsZH5'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'C:/Users/Mohit/PycharmProjects/SuperAIPR/newslstmstockbot/keys.json'
 
 import alpaca_trade_api as tradeapi
 from trading_bot.agent import Agent
@@ -59,18 +46,27 @@ def main(window_size, batch_size, ep_count, model_name, pretrained, debug):
 
 
 if __name__ == "__main__":
-    args = docopt(__doc__)
+    # args = docopt(__doc__)
 
-    months = args["<months>"]
-    window_size = int(args["--window-size"])
-    batch_size = int(args["--batch-size"])
-    ep_count = int(args["--episode-count"])
-    model_name = args["--model-name"]
-    pretrained = args["--pretrained"]
-    debug = args["--debug"]
-    stock_name = args["--stock-name"]
+    # months = args["<months>"]
+    # window_size = int(args["--window-size"])
+    # batch_size = int(args["--batch-size"])
+    # ep_count = int(args["--episode-count"])
+    # model_name = args["--model-name"]
+    # pretrained = args["--pretrained"]
+    # debug = args["--debug"]
+    # stock_name = args["--stock-name"]
 
-    api = tradeapi.REST()
+    months = 12
+    window_size = 10
+    batch_size = 32
+    ep_count = 10
+    model_name = 'model_AMD_alpha'
+    pretrained = True
+    debug = True
+    stock_name = 'AMD'
+
+    api = tradeapi.REST('ZFA3HZJSCNVu7dJGm0Y4pNIBjjIRRg4c', 'https://api.polygon.io')
     today = datetime.datetime.today()
 
     coloredlogs.install(level="DEBUG")
@@ -100,8 +96,8 @@ if __name__ == "__main__":
                 break
 
             except:
-                logging.debug("Error connecting to Polygon, retrying in 30s (" + str(cnt) + "/30)")
-                time.sleep(30)
+                logging.warning("API timeout, reconnecting in 60s (" + str(cnt) + "/30)")
+                time.sleep(60)
                 cnt += 1
                 continue
 
@@ -121,7 +117,7 @@ if __name__ == "__main__":
     # Check for connection errors and retry 30 times
     cnt = 0
     while cnt <= 30:
-
+        cnt = 0
         try:
             # 3 days of info
             data = api.polygon.historic_agg_v2(stock_name, 1, 'minute',
@@ -130,8 +126,8 @@ if __name__ == "__main__":
             break
 
         except:
-            logging.debug("Error connecting to Polygon, retrying in 30s (" + str(cnt) + "/30)")
-            time.sleep(30)
+            logging.warning("API timeout, reconnecting in 60s (" + str(cnt) + "/30)")
+            time.sleep(60)
             cnt += 1
             continue
 
