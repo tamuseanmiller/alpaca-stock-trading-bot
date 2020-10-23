@@ -100,7 +100,7 @@ def decisions(agent, data, window_size, debug, stock, api):
 
                     # Countdown timer until market opens
                     while time_to_open > -1:
-                        print(str(time_to_open) + " minutes til market open.", end='\n')
+                        print(str(time_to_open) + " minutes til market open.", end='\r')
                         time.sleep(60)
                         time_to_open -= 1
 
