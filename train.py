@@ -43,25 +43,16 @@ def main(window_size, batch_size, ep_count, model_name, pretrained, debug):
 if __name__ == "__main__":
     # args = docopt(__doc__)
 
-    # months = args["<months>"]
-    # window_size = int(args["--window-size"])
-    # batch_size = int(args["--batch-size"])
-    # ep_count = int(args["--episode-count"])
-    # model_name = args["--model-name"]
-    # pretrained = args["--pretrained"]
-    # debug = args["--debug"]
-    # stock_name = args["--stock-name"]
+    months = args["<months>"]
+    window_size = int(args["--window-size"])
+    batch_size = int(args["--batch-size"])
+    ep_count = int(args["--episode-count"])
+    model_name = args["--model-name"]
+    pretrained = args["--pretrained"]
+    debug = args["--debug"]
+    stock_name = args["--stock-name"]
 
-    months = 12
-    window_size = 10
-    batch_size = 32
-    ep_count = 10
-    model_name = 'model_AMD_alpha'
-    pretrained = True
-    debug = True
-    stock_name = 'AMD'
-
-    api = tradeapi.REST('ZFA3HZJSCNVu7dJGm0Y4pNIBjjIRRg4c', 'https://api.polygon.io')
+ 
     today = datetime.datetime.today()
 
     coloredlogs.install(level="DEBUG")
@@ -121,7 +112,7 @@ if __name__ == "__main__":
             break
 
         except:
-            logging.warning("API timeout, reconnecting in 60s (" + str(cnt) + "/30)")
+            logging.debug("Error connecting to Polygon, retrying in 30s (" + str(cnt) + "/30)")
             time.sleep(60)
             cnt += 1
             continue
