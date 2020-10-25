@@ -20,6 +20,8 @@ from docopt import docopt
 
 import logging
 
+from yahoo_fin import stock_info as si
+
 import numpy as np
 
 from tqdm import tqdm
@@ -141,7 +143,7 @@ def decisions(agent, data, window_size, debug, stock, api):
 
                     try:
                         qty = api.get_position(stock).qty
-                        
+
                     except:
                         logging.warning("Error fetching stock position, may not exist.")
 
@@ -185,7 +187,15 @@ def decisions(agent, data, window_size, debug, stock, api):
                 file.write(str(datetime.datetime.now().strftime("%m/%d/%Y,%H:%M:%S")) + ',BUY,$' + str(
                     date.get(stock)[0].c) + '\n')
                 file.close()
-                orders.append(submit_order_helper(1, stock, 'buy', api))
+                global now
+                global current_time
+                global bbbpower
+                now = datetime.now()
+                current_time = now.strftime("%H")
+                account = api.get_account()
+                perstockpower = int(float(account.buying_power)/4)
+                bbbpower = int(perstockpower/float(si.get_live_price(stock)))
+                orders.append(submit_order_helper(bbbpower, stock, 'buy', api))
 
             # Appends and logs
             history.append((data[t], "BUY"))
@@ -218,7 +228,8 @@ def decisions(agent, data, window_size, debug, stock, api):
                 file.write(str(datetime.datetime.now().strftime("%m/%d/%Y,%H:%M:%S")) + ',SELL,$' + str(
                     date.get(stock)[0].c) + '\n')
                 file.close()
-                submit_order_helper(1, stock, 'sell', api)
+                position = api.get_position(stock)
+                submit_order_helper(int(position.qty), stock, 'sell', api)
             history.append((data[t], "SELL"))
             if debug:
                 logging.debug("Sell at: {} | Sentiment: {} | Position: {}".format(
@@ -301,7 +312,6 @@ def alpaca_trading_bot(stock_name, window_size=10, model_name='model_debug'):
 def main(eval_stock, window_size, model_name, debug):
     """ Evaluates the stock trading bot.
     Please see https://arxiv.org/abs/1312.5602 for more details.
-
     Args: [python eval.py --help]
     """
     data = get_stock_data(eval_stock)
