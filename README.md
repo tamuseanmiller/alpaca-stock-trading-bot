@@ -24,6 +24,8 @@ All data is automatically requested from the Alpaca Barset and Polygon News
 
 To use this script you have to go out and get a few API keys:
 
+[Fetch a NewsAPI Key](https://newsapi.org/)
+
 [Make a Funded Alpaca Brokerage Account](https://alpaca.markets/)
 
 Optional now: [Apply for the Natural Language API](https://cloud.google.com/natural-language/)
@@ -49,6 +51,23 @@ After this, open up creds.py and add in your url.
 mongoInfo = ""
 
 client = pymongo.MongoClient(mongoInfo)
+```
+
+Then put your NewsAPI key in trading_bot/sentiment.py
+
+```
+flair_sentiment = flair.models.TextClassifier.load('en-sentiment')
+
+# NewsAPI API call
+url = ('https://newsapi.org/v2/everything?'
+       'apiKey=<your-api-key>&'
+       'qInTitle=\"' + stock + '\"&'
+                               'sources=reuters, the-wall-street-journal, cnbc&'
+                               'language=en&'
+                               'sortBy=publishedAt&'
+                               'pageSize=50')
+
+response = requests.get(url).json()['articles']
 ```
 
 Install python
