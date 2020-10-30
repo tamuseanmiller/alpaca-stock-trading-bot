@@ -24,6 +24,8 @@ from docopt import docopt
 
 import logging
 
+from yahoo_fin import stock_info as si
+
 import numpy as np
 
 from tqdm import tqdm
@@ -181,6 +183,7 @@ def decisions(agent, data, api):
                     try:
                         qty = api.get_position(stock_name).qty
 
+
                     except:
                         logging.warning("Error fetching stock position, may not exist.")
 
@@ -219,8 +222,15 @@ def decisions(agent, data, api):
             # Buy using Alpaca API, only if it is realtime data
             if t == data_length - 1:
 
+                now = datetime.now()
+                current_time = now.strftime("%H")
+                account = api.get_account()
+                perstockpower = int(float(account.buying_power)/4)
+                bbbpower = int(perstockpower/float(date.get(stock_name)[0].c))
+                orders.append(submit_order_helper(bbbpower, stock, 'buy', api))
+
                 agent.inventory.append(date.get(stock_name)[0].c)
-                orders.append(submit_order_helper(1, 'buy', api, date))
+                orders.append(submit_order_helper(bbbpower, 'buy', api, date))
                 history.append((date.get(stock_name)[0].c, "BUY"))
                 if debug:
                     logging.debug(
@@ -239,6 +249,7 @@ def decisions(agent, data, api):
                         "Buy at: {}  | Sentiment: {} | Total Profit: {}".format(format_currency(data[t]),
                                                                                 format_sentiment(sentiments),
                                                                                 format_currency(total_profit)))
+
 
         # SELL
         elif (action == 2 or sentiments < 0) and len(agent.inventory) > 0:
@@ -411,11 +422,7 @@ def alpaca_trading_bot():
     while cnt <= 30:
         try:
             # Get date for ticker
-            date = api.polygon.historic_agg_v2(stock_name, 1, timespan='minute',
-                                               _from=str(datetime.date.today() - datetime.timedelta(days=3)),
-                                               to=str(datetime.date.today()), limit=1000).df
-
-            # date = api.get_barset(timeframe='minute', symbols=stock_name, limit=1000, end=datetime.datetime.now())
+            date = api.get_barset(timeframe='minute', symbols=stock_name, limit=1000, end=datetime.datetime.now())
             break
 
         except:
@@ -425,8 +432,8 @@ def alpaca_trading_bot():
             continue
 
     # Write ticker csv
-    for minutes in date['close']:
-        file.write(str(minutes))
+    for minutes in date.get(stock_name):
+        file.write(str(minutes.c))
         file.write('\n')
 
     file.close()
@@ -440,7 +447,6 @@ def alpaca_trading_bot():
 def main():
     """ Evaluates the stock trading bot.
     Please see https://arxiv.org/abs/1312.5602 for more details.
-
     Args: [python eval.py --help]
     """
     data = get_stock_data(eval_stock)
