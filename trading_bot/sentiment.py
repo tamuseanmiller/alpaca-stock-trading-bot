@@ -135,7 +135,7 @@ def runNewsAnalysis(stock, api, natural_lang):
 
     # NewsAPI API call
     url = ('https://newsapi.org/v2/everything?'
-           'apiKey=d42e88f1fb624084891e89df549c06ff&'
+           'apiKey=<your-api-key>&'
            'qInTitle=\"' + stock + '\"&'
                                    'sources=reuters, the-wall-street-journal, cnbc&'
                                    'language=en&'
