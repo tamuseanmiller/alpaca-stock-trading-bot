@@ -24,8 +24,6 @@ from docopt import docopt
 
 import logging
 
-from yahoo_fin import stock_info as si
-
 import numpy as np
 
 from tqdm import tqdm
