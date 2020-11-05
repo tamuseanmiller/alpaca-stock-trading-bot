@@ -152,7 +152,7 @@ def decisions(agent, data, api):
                     while cnt <= 30:
                         try:
                             collection2 = db.get_collection(stock_name + "_profit")
-                            collection2.insert_one({"Datetime": datetime.date.today() - datetime.timedelta(days=1),
+                            collection2.insert_one({"Datetime": datetime.datetime.now() - datetime.timedelta(days=1),
                                                     "Profit": total_profit})
                             break
 
@@ -186,7 +186,7 @@ def decisions(agent, data, api):
                         logging.warning("Error fetching stock position, may not exist.")
 
                     # Just checks to see if I'm trying to sell zero or a negative number of stock
-                    if int(qty) > 2:
+                    if int(qty) > 1:
                         submit_order_helper(int(qty) - 1, 'sell', api, date)
 
         # Checks for if the original 1000 data points were tested, if they were it retrieves realtime data
@@ -223,8 +223,8 @@ def decisions(agent, data, api):
                 now = datetime.now()
                 current_time = now.strftime("%H")
                 account = api.get_account()
-                perstockpower = int(float(account.buying_power)/4)
-                bbbpower = int(perstockpower/float(date.get(stock_name)[0].c))
+                perstockpower = int(float(account.buying_power) / 4)
+                bbbpower = int(perstockpower / float(date.get(stock_name)[0].c))
                 orders.append(submit_order_helper(bbbpower, stock, 'buy', api))
 
                 agent.inventory.append(date.get(stock_name)[0].c)
@@ -297,7 +297,7 @@ def decisions(agent, data, api):
                             collection.insert_one({"Datetime": datetime.datetime.now(),
                                                    "Action": "HOLD",
                                                    "Price": date.get(stock_name)[0].c})
-                            logging.info("Added Order to MongoDB")                       
+                            logging.info("Added Order to MongoDB")
                             break
                         except:
                             logging.warning(
@@ -381,7 +381,7 @@ def submit_order_helper(qty, side, api, date):
                             collection.insert_one({"Datetime": datetime.datetime.now(),
                                                    "Action": "BUY",
                                                    "Price": date.get(stock_name)[0].c})
-                            logging.info("Added Order to MongoDB")                       
+                            logging.info("Added Order to MongoDB")
                             break
 
                         except:
