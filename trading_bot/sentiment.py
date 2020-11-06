@@ -21,8 +21,27 @@ import logging
 import flair
 from flair.models import TextClassifier
 from flair.data import Sentence
+import re
+from flair.embeddings import ELMoEmbeddings
 
 
+def clean(raw):
+    """ Remove hyperlinks and markup """
+    result = re.sub("<[a][^>]*>(.+?)</[a]>", 'Link.', raw)
+    result = re.sub('&gt;', "", result)
+    result = re.sub('&#x27;', "'", result)
+    result = re.sub('&quot;', '"', result)
+    result = re.sub('&#x2F;', ' ', result)
+    result = re.sub('<p>', ' ', result)
+    result = re.sub('</i>', '', result)
+    result = re.sub('&#62;', '', result)
+    result = re.sub('<i>', ' ', result)
+    result = re.sub("\n", '', result)
+    result = re.sub("&#39;", '\'', result)
+    return result
+
+
+# Not used right now
 def decide_stock():
     coloredlogs.install(level="DEBUG")
     url = 'https://finance.yahoo.com/screener/predefined/day_gainers'
@@ -107,16 +126,21 @@ def runNewsAnalysis(stock, api, natural_lang):
 
     # driver.quit()
 
+    # Instantiates a client
+    # [START language_python_migration_client]
+    client = language.LanguageServiceClient()
+    # [END language_python_migration_client]
+
     flair_sentiment = flair.models.TextClassifier.load('en-sentiment')
 
     # NewsAPI API call
     url = ('https://newsapi.org/v2/everything?'
-           'apiKey=d42e88f1fb624084891e89df549c06ff&'
+           'apiKey=<your-api-key>&'
            'qInTitle=\"' + stock + '\"&'
                                    'sources=reuters, the-wall-street-journal, cnbc&'
                                    'language=en&'
                                    'sortBy=publishedAt&'
-                                   'pageSize=100')
+                                   'pageSize=50')
 
     response = requests.get(url).json()['articles']
 
@@ -130,7 +154,7 @@ def runNewsAnalysis(stock, api, natural_lang):
     # Iterates through every news article from News API
     for line in response:
         words = str(line['content'])
-        file.write(words)
+        file.write(clean(words))
 
         if not natural_lang:
 
@@ -152,11 +176,6 @@ def runNewsAnalysis(stock, api, natural_lang):
 
         # Checks to see if you're using natural language
         else:
-
-            # Instantiates a client
-            # [START language_python_migration_client]
-            client = language.LanguageServiceClient()
-            # [END language_python_migration_client]
 
             document = {
                 "content": words,
@@ -180,7 +199,7 @@ def runNewsAnalysis(stock, api, natural_lang):
     # Iterates through every news article on Polygon news
     for source in news:
         words = source.summary
-        file.write(words)
+        file.write(clean(words))
         file.write('\n')
 
         # Checks to see if you're using Flair

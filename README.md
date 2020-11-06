@@ -24,9 +24,13 @@ All data is automatically requested from the Alpaca Barset and Polygon News
 
 To use this script you have to go out and get a few API keys:
 
+[Fetch a NewsAPI Key](https://newsapi.org/)
+
 [Make a Funded Alpaca Brokerage Account](https://alpaca.markets/)
 
 Optional now: [Apply for the Natural Language API](https://cloud.google.com/natural-language/)
+
+Optional: [Download MongoDB](https://www.mongodb.com/)
 
 After you finish with these few steps, write down your API keys, you'll need them below.
 
@@ -38,6 +42,32 @@ export APCA_API_BASE_URL=BASE_API_URL
 export APCA_API_KEY_ID=YOUR_API_KEY_ID
 export APCA_API_SECRET_KEY=YOUR_SECRET_KEY
 export GOOGLE_APPLICATION_CREDENTIALS=PATH_TO_CREDENTIALS_FILE
+```
+
+After this, open up creds.py and add in your url.
+
+```bash
+# Add Info
+mongoInfo = ""
+
+client = pymongo.MongoClient(mongoInfo)
+```
+
+Then put your NewsAPI key in trading_bot/sentiment.py
+
+```
+flair_sentiment = flair.models.TextClassifier.load('en-sentiment')
+
+# NewsAPI API call
+url = ('https://newsapi.org/v2/everything?'
+       'apiKey=<your-api-key>&'
+       'qInTitle=\"' + stock + '\"&'
+                               'sources=reuters, the-wall-street-journal, cnbc&'
+                               'language=en&'
+                               'sortBy=publishedAt&'
+                               'pageSize=50')
+
+response = requests.get(url).json()['articles']
 ```
 
 Install python
@@ -74,14 +104,14 @@ I think the rest is pretty self explanatory.
 Once you're done training, run the eval script or just run the entire bot:
 
 ```bash
-eval.py <eval-stock> [--window-size=<window-size>] [--model-name=<model-name>] [--run-bot=<y/n>] [--stock-name=<stock-ticker>] [--natural-lang] [--debug]
+eval.py eval.py <eval-stock> [--window-size=<window-size>] [--model-name=<model-name>] [--run-bot] [--db-name=<db-name>] [--stock-name=<stock-ticker>] [--natural-lang] [--debug] [--mongo]
 ```
 
 
 Example Usage:
 
 ```bash
-python3 eval.py test --window-size=10 --model-name=model_alpha --run-bot=y --stock-name=GOOGL --debug
+python3 eval.py test --window-size=10 --db-name=stocks --model-name=model_alpha --run-bot --stock-name=GOOGL --mongo --debug
 ```
 
 Now everything should be good to go!
@@ -89,6 +119,8 @@ Now everything should be good to go!
 ## Extra Tidbits of Useful Information
 
 * The sentiment analysis of news runs by default off of Flair, you can enable Google's Natural Language just by adding the '--natural-lang' command.
+
+* To add MongoDB functionality add the '--db-name' and '--mongo' flags.
 
 * News runs off of the NewsAPI and Polygon news.
 

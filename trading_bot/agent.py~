@@ -313,7 +313,7 @@ class Agent:
     def save(self, episode):
         self.model.save("models/{}_{}".format(self.model_name, episode))
 
-    def soft_save(self):
+    def soft_save(self);
         self.model.save("models/".format(self.model_name))
 
     def load(self):
