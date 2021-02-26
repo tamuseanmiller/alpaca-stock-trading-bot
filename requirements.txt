@@ -1,5 +1,5 @@
 absl-py==0.9.0
-aiohttp==3.6.2
+aiohttp==3.7.4
 alpaca-trade-api==0.49.0
 alpha-vantage==2.2.0
 astunparse==1.6.3
